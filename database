@@ -1,0 +1,116 @@
+CREATE TABLE customer (
+  c_id int(11) NOT NULL AUTO_INCREMENT,
+  email varchar(40) NOT NULL,
+  password varchar(16) NOT NULL,
+  c_name varchar(30) DEFAULT NULL,
+  ADD PRIMARY KEY (c_id),
+  ADD UNIQUE KEY email (email);
+)
+
+
+CREATE TABLE orders (
+  o_id int(11) NOT NULL AUTO_INCREMENT,
+  pr_id int(11) DEFAULT NULL,
+  totalbill int(11) NOT NULL,
+  purdate date NOT NULL DEFAULT current_timestamp(),
+  c_id int(11) DEFAULT NULL,
+  ADD PRIMARY KEY (o_id),
+  ADD FOREIGN KEY (c_id) REFERENCES customer(c_id) ON DELETE CASCADE,
+  ADD FOREIGN KEY (pr_id) REFERENCES products(pr_id);
+)
+
+
+CREATE TABLE `pet` (
+  `p_id` int(11) NOT NULL AUTO_INCREMENT,
+  `p_name` varchar(50) NOT NULL,
+  `breed` varchar(30) NOT NULL,
+  `age` int(11) NOT NULL,
+  `ps_name` varchar(20) DEFAULT NULL,
+  `c_id` int(11) DEFAULT NULL,
+  ADD PRIMARY KEY (`p_id`),
+  ADD UNIQUE KEY `p_name` (`p_name`,`breed`,`age`),
+  ADD FOREIGN KEY (c_id) REFERENCES customer (c_id) ON DELETE CASCADE;
+)
+
+
+CREATE TABLE `pet_species` (
+  `ps_id` int(11) NOT NULL AUTO INCREMENT,
+  `ps_name` varchar(20) NOT NULL,
+  ADD PRIMARY KEY (`ps_id`,`ps_name`);
+)
+
+
+CREATE TABLE `products` (
+  `pr_id` int(11) NOT NULL AUTO INCREMENT,
+  `pr_name` varchar(30) NOT NULL,
+  `pr_category` varchar(20) NOT NULL,
+  `price` int(11) NOT NULL,
+  `ps_id` int(11) DEFAULT NULL,
+  `quantityleft` int(11) NOT NULL DEFAULT 0,
+  `pr_img` varchar(100) NOT NULL,
+  `pr_desc` varchar(200) DEFAULT NULL
+  ADD PRIMARY KEY (`pr_id`),
+  ADD FOREIGN KEY (`ps_id`) REFERENCES `pet_species` (`ps_id`),
+  ADD FOREIGN KEY (`ps_id`) REFERENCES `pet_species` (`ps_id`);
+)
+
+
+INSERT INTO `customer` (`c_id`, `email`, `password`, `c_name`) VALUES
+(15, 'gurup0828@gmail.com', 'Guru@001', 'Akash'),
+(16, 'asdgsadg@gmail.com', '123456', 'Kushal'),
+(17, 'akash@gmail.com' , '254524','akash'),
+(18, 'kishan@gmail.com' , 'kish@123','kishan'),
+(19, 'aneesh@gmail.com' ,'aneesh@254','Aneesh');
+
+
+INSERT INTO `orders` (`o_id`, `pr_id`, `totalbill`, `purdate`, `c_id`) VALUES
+(35, 13, 349, '2023-01-20', 15),
+(36, 14, 599, '2023-01-20', 16),
+(37, 15, 249, '2023-01-22', 17),
+(38, 14, 479, '2023-01-22', 18),
+(39, 15, 389, '2023-01-23', 19);
+
+
+INSERT INTO `pet` (`p_id`, `p_name`, `breed`, `age`, `ps_name`, `c_id`) VALUES
+(7, 'zoo', 'abc', 11, 'cat', 15),
+(8, 'deee', 'gh', 7, 'dog', 16),
+(9, 'poko', 'kl', 5, 'dog', 17),
+(10, 'happy', 'mn', 3, 'birds', 18),
+(11, 'pree', 'op', 8, 'others', 19);
+
+
+INSERT INTO `pet_species` (`ps_id`, `ps_name`) VALUES
+(1, 'dog'),
+(2, 'cat'),
+(3, 'others'),
+(4, 'birds'),
+(5, 'aquatic');
+
+
+INSERT INTO `products` (`pr_id`, `pr_name`, `pr_category`, `price`, `ps_id`, `quantityleft`, `pr_img`, `pr_desc`) VALUES
+(1, 'Pedigree', 'Food', 3000, 1, 10, '\\project\\data\\images\\Dog\\food\\pedigree.jpg', 'Pedigree is a complete and balanced food for dogs. Prepared with high-quality ingredients, Pedigree is rich in proteins and nutrition.'),
+(2, 'munchy sticks', 'food', 350, 1, 5, '\\project\\data\\images\\Dog\\food\\munchy_sticks.jpeg', 'Munchy Sticks are delicious treats that help improve your dog\'s oral health. It is a perfect reward for dogs who love to chew.'),
+(3, 'ziwi bones', 'Food', 150, 1, 10, '\\project\\data\\images\\Dog\\food\\ziwi_bones.jpeg', 'The bones will make the teeth of your dogs stronger by giving them the required exercise to the jaws and a gentle massage to the gums.'),
+(4, 'Tasty Bites - Dog Treats ', 'Food', 210, 1, 10, '\\project\\data\\images\\Dog\\food\\dog_treats.png', 'doggie dental treats help to freshen your pup\'s breath and keep tartar and plaque at bay.'),
+(5, 'well Bites - dog biscuits', 'food', 430, 1, 10, '\\project\\data\\images\\Dog\\food\\dog_biscuit.png', 'Wholesome Puppy Bites, WellBites and WellBars are made from just the good stuff, with no additives, fillers or artificial ingredients'),
+(6, 'snoozer over stuffed Luxury Do', 'toys', 5000, 1, 5, '\\project\\data\\images\\Dog\\accessories\\dog_sofa.jpeg', NULL),
+(7, 'customized_Nameplate_Collar ', 'accessories', 440, 1, 5, '\\project\\data\\images\\Dog\\accessories\\customized_Nameplate_Collar.jpeg', NULL),
+(8, 'Multifunctional_Harness', 'accessories', 499, 1, 5, '\\project\\data\\images\\Dog\\accessories\\Multifunctional_Harness.jpeg', NULL),
+(9, 'Dog Brush', 'accessories', 299, 1, 10, '\\project\\data\\images\\Dog\\accessories\\Dog_Brush.jpeg', ''),
+(10, 'Animology', 'accessories', 399, 1, 10, '\\project\\data\\images\\Dog\\grooming\\conditioner.jpeg', 'Conditioner For Dogs'),
+(11, 'Baby Powder Scented', 'grooming', 449, 1, 10, '\\project\\data\\images\\Dog\\grooming\\pet_wipes.jpeg', 'Charcol Wet Pet Wipes'),
+(12, 'Dogs Calm and Happy', 'grooming', 449, 1, 10, '\\project\\data\\images\\Dog\\grooming\\massage_oil.jpeg', 'Massage Oil for Dogs'),
+(13, 'Omega PLus', 'supplements', 349, 1, 10, '\\project\\data\\images\\Dog\\supplements\\omega_oil.jpeg', 'Premium Icelandic omega-3 Fish Oil'),
+(14, 'Protect', 'supplements', 449, 1, 10, '\\project\\data\\images\\Dog\\supplements\\Probiotics.jpeg', 'Soil Based Probiotics'),
+(15, 'No Scoot', 'supplements', 399, 1, 10, '\\project\\data\\images\\Dog\\supplements\\supplement.jpeg', 'Supplement Powder helps support healthy gland Function'),
+(16, 'Bamboodles', 'accessories', 729, 1, 0, '\\project\\data\\images\\Dog\\toys\\Bamboodles.jpeg', 'T-bone bamboo + nylon grip easy dog chew'),
+(17, 'Sheba', 'food', 420, 2, 10, '\\project\\data\\images\\cat\\food\\meaty_sticks.jpeg', 'Meaty Tender Sticks'),
+(18, 'Whiskas', 'food', 449, 2, 10, '\\project\\data\\images\\cat\\food\\Whiskas.jpeg', 'Mixed Meat food Gravy'),
+(19, 'row chews', 'food', 320, 2, 10, '\\project\\data\\images\\cat\\food\\cat_treats.jpeg', 'Hand picked treats for cats'),
+(20, 'Allergy Aids', 'supplements', 449, 2, 10, '\\project\\data\\images\\cat\\supplements\\allergy.jpeg', 'Allergic Antioxidants for cats'),
+(21, 'kitty rade', 'supplements', 349, 2, 10, '\\project\\data\\images\\cat\\supplements\\kitty_rade.jpeg', 'Flavoured liquid Digestive Supplements'),
+(22, 'Taperone', 'supplements', 399, 2, 10, '\\project\\data\\images\\cat\\supplements\\Tapeworm.jpeg', 'Tapeworm Dewormer Praziquantel Tablets'),
+(23, 'Cat Bed', 'accessories', 1449, 2, 10, '\\project\\data\\images\\cat\\accessories\\Bed.jpeg', 'Pet Plush Bed'),
+(24, 'Cat Collar', 'accessories', 349, 2, 10, '\\project\\data\\images\\cat\\accessories\\Collar.jpeg', ''),
+(25, 'Brush', 'accessories', 449, 2, 10, '\\project\\data\\images\\cat\\accessories\\Brush.jpeg', 'Self Cleaning Cat Slicker Brush'),
+(26, 'Tunnel Toy', 'accessories', 1449, 2, 10, '\\project\\data\\images\\cat\\toys\\Tunnel.jpeg', '');
